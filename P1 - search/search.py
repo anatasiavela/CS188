@@ -75,7 +75,7 @@ def tinyMazeSearch(problem):
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
-
+    
     Your search algorithm needs to return a list of actions that reaches the
     goal. Make sure to implement a graph search algorithm.
 
@@ -86,63 +86,55 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    "*** YOUR CODE HERE ***"
-    fringe = Stack()
-    fringe.push(problem.getStartState())
-    closed = set()
-    actions = Stack()
-    actions.push([])
 
+    fringe = util.Stack()
+    fringe.push([problem.getStartState(), []])
+    alreadyVisited = []
     while not fringe.isEmpty():
-        node = fringe.pop()
-        action = actions.pop()
-        if problem.isGoalState(node):
-            return actions
-        if node not in closed:
-            closed.add(node)
-            for child in problem.getSuccessors(node):
-                fringe.push(child[0])
-                action.push(action + child[1])
+        element = fringe.pop()
+        currentState, previousActions = element[0], element[1]
+        if problem.isGoalState(currentState):
+            return previousActions
+        if currentState not in alreadyVisited:
+            alreadyVisited = alreadyVisited + [currentState]
+            for newStates in problem.getSuccessors(currentState):
+                nextState = newStates[0]
+                direction = newStates[1]
+                fringe.push([nextState, previousActions + [direction]])
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    fringe = Queue()
-    fringe.push(problem.getStartState())
-    closed = set()
-    actions = Queue()
-    actions.push([])
-
+    fringe = util.Queue()
+    alreadyVisited = []
+    fringe.push([problem.getStartState(), []])
     while not fringe.isEmpty():
-        node = fringe.pop()
-        action = actions.pop()
-        if problem.isGoalState(node):
-            return action
-        if node not in closed:
-            closed.add(node)
-            for child in problem.getSuccessors(node):
-                fringe.push(child[0])
-                action.push(actions + child[1])
+        element = fringe.pop()
+        currentState, previousActions = element[0], element[1]
+        if problem.isGoalState(currentState):
+            return previousActions
+        if currentState not in alreadyVisited:
+            alreadyVisited = alreadyVisited + [currentState]
+            for newStates in problem.getSuccessors(currentState):
+                nextState = newStates[0]
+                direction = newStates[1]
+                fringe.push([nextState, previousActions + [direction]])
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    fringe = PriorityQueue()
-    fringe.push(problem.getStartState(), 0)
-    closed = set()
-    actions = PriorityQueue()
-    actions.push([], 0)
-
+    fringe = util.PriorityQueue()
+    fringe.push([problem.getStartState(), []], 0)
+    alreadyVisited = []
     while not fringe.isEmpty():
-        node = fringe.pop()
-        action = actions.pop()
-        if problem.isGoalState(node):
-            return action
-        if node not in closed:
-            closed.add(node)
-            for child in problem.getSuccessors(node):
-                fringe.update(child[0], child[2])
-                actions.push(action + child[1], child[2])
+        currentState, previousActions = fringe.pop()
+        if problem.isGoalState(currentState):
+            return previousActions
+        if currentState not in alreadyVisited:
+            alreadyVisited += [currentState]
+            for expanded in problem.getSuccessors(currentState):
+                actions = previousActions + [expanded[1]]
+                fringe.push([expanded[0], actions], problem.getCostOfActions(actions))
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -154,22 +146,19 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    fringe = PriorityQueue()
-    fringe.push(problem.getStartState(), 0)
-    closed = set()
-    actions = PriorityQueue()
-    actions.push([], 0)
-
+    fringe = util.PriorityQueue()
+    fringe.push([problem.getStartState(), []], 0)
+    alreadyVisited = []
     while not fringe.isEmpty():
-        node = fringe.pop()
-        action = actions.pop()
-        if problem.isGoalState(node):
-            return action
-        if node not in closed:
-            closed.add(node)
-            for child in problem.getSuccessors(node):
-                fringe.update(child[0], child[2] + heuristic(node))
-                actions.push(action + child[1], child[2] + heuristic(node))
+        currentState, previousActions = fringe.pop()
+        if problem.isGoalState(currentState):
+            return previousActions
+        if currentState not in alreadyVisited:
+            alreadyVisited += [currentState]
+            for expanded in problem.getSuccessors(currentState):
+                actions = previousActions + [expanded[1]]
+                combinedCost = problem.getCostOfActions(actions) + heuristic(expanded[0], problem)
+                fringe.push([expanded[0], actions], combinedCost)
 
 
 # Abbreviations
