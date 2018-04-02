@@ -148,6 +148,9 @@ def fillYCPT(bayesNet, gameState):
     bayesNet.setCPT(Y_POS_VAR, yFactor)
 
 def fillHouseCPT(bayesNet, gameState):
+    print bayesNet.variableDomainsDict()
+    print bayesNet.variableDomainsDict().keys()
+    print len(bayesNet.variableDomainsDict().keys)
     foodHouseFactor = bn.Factor([FOOD_HOUSE_VAR], [X_POS_VAR, Y_POS_VAR], bayesNet.variableDomainsDict())
     for assignment in foodHouseFactor.getAllPossibleAssignmentDicts():
         left = assignment[X_POS_VAR] == FOOD_LEFT_VAL
