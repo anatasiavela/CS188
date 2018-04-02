@@ -211,6 +211,8 @@ def fillObsCPT(bayesNet, gameState):
     for housePos in gameState.getPossibleHouses():
         for obsPos in gameState.getHouseWalls(housePos):
 
+            obsVar = OBS_VAR_TEMPLATE % obsPos
+
             yFactor = bn.Factor([obsPos], [], bayesNet.variableDomainsDict())
 
             for assignment in yFactor.getAllPossibleAssignmentDicts():
@@ -224,22 +226,18 @@ def fillObsCPT(bayesNet, gameState):
                         (left and assignment[Y_POS_VAR] == LEFT_TOP_VAL)
 
                 # adjacent house center is occupied by neigher the ghost house or the food house
-                if top and left and assignment[FOOD_HOUSE_VAR] != TOP_LEFT_VAL and \
-                        top and not left and assignment[FOOD_HOUSE_VAR] != TOP_RIGHT_VAL and \
-                        not top and left and assignment[FOOD_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
-                        not top and not left and assignment[FOOD_HOUSE_VAR] != BOTTOM_RIGHT_VAL and \
-                        top and left and assignment[GHOST_HOUSE_VAR] != TOP_LEFT_VAL and \
-                        top and not left and assignment[GHOST_HOUSE_VAR] != TOP_RIGHT_VAL and \
-                        not top and left and assignment[GHOST_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
-                        not top and not left and assignment[GHOST_HOUSE_VAR] != BOTTOM_RIGHT_VAL:
+                if (top and left and assignment[FOOD_HOUSE_VAR] != TOP_LEFT_VAL and \
+                                    assignment[GHOST_HOUSE_VAR] != TOP_LEFT_VAL) or \
+                        (top and not left and assignment[FOOD_HOUSE_VAR] != TOP_RIGHT_VAL and \
+                                    assignment[GHOST_HOUSE_VAR] != TOP_RIGHT_VAL) or \
+                        (not top and left and assignment[FOOD_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
+                                    assignment[GHOST_HOUSE_VAR] != BOTTOM_LEFT_VAL) or \
+                        (not top and not left and assignment[FOOD_HOUSE_VAR] != BOTTOM_RIGHT_VAL and \
+                                    assignment[GHOST_HOUSE_VAR] != BOTTOM_RIGHT_VAL):
                     NO_OBS_VAR = 1
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
-                elif (top and left and assignment[FOOD_HOUSE_VAR] != TOP_LEFT_VAL and \
-                        top and not left and assignment[FOOD_HOUSE_VAR] != TOP_RIGHT_VAL and \
-                        not top and left and assignment[FOOD_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
-                        not top and not left and assignment[FOOD_HOUSE_VAR] != BOTTOM_RIGHT_VAL) and \
-                        top and left and assignment[GHOST_HOUSE_VAR] == TOP_LEFT_VAL or \
+                elif top and left and assignment[GHOST_HOUSE_VAR] == TOP_LEFT_VAL or \
                         top and not left and assignment[GHOST_HOUSE_VAR] == TOP_RIGHT_VAL or \
                         not top and left and assignment[GHOST_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
                         not top and not left and assignment[GHOST_HOUSE_VAR] == BOTTOM_RIGHT_VAL:
@@ -250,18 +248,14 @@ def fillObsCPT(bayesNet, gameState):
                 elif top and left and assignment[FOOD_HOUSE_VAR] == TOP_LEFT_VAL or \
                         top and not left and assignment[FOOD_HOUSE_VAR] == TOP_RIGHT_VAL or \
                         not top and left and assignment[FOOD_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
-                        not top and not left and assignment[FOOD_HOUSE_VAR] == BOTTOM_RIGHT_VAL and \
-                        (top and left and assignment[GHOST_HOUSE_VAR] != TOP_LEFT_VAL and \
-                        top and not left and assignment[GHOST_HOUSE_VAR] != TOP_RIGHT_VAL and \
-                        not top and left and assignment[GHOST_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
-                        not top and not left and assignment[GHOST_HOUSE_VAR] != BOTTOM_RIGHT_VAL):
+                        not top and not left and assignment[FOOD_HOUSE_VAR] == BOTTOM_RIGHT_VAL:
                     BLUE_OBS_VAR = 1 - PROB_FOOD_RED
                     RED_OBS_VAR = PROB_FOOD_RED
 
-                yFactor.setProbability({OBS_VAR_TEMPLATE % obsPos: BLUE_OBS_VAL}, BLUE_OBS_VAR)
-                yFactor.setProbability({OBS_VAR_TEMPLATE % obsPos: RED_OBS_VAL}, RED_OBS_VAR)
-                yFactor.setProbability({OBS_VAR_TEMPLATE % obsPos: NO_OBS_VAL}, NO_OBS_VAR)
-                bayesNet.setCPT(OBS_VAR_TEMPLATE % obsPos, yFactor)
+                yFactor.setProbability({obsVar: BLUE_OBS_VAL}, BLUE_OBS_VAR)
+                yFactor.setProbability({obsVar: RED_OBS_VAL}, RED_OBS_VAR)
+                yFactor.setProbability({obsVar: NO_OBS_VAL}, NO_OBS_VAR)
+            bayesNet.setCPT(obsVar, yFactor)
     
 
 def getMostLikelyFoodHousePosition(evidence, bayesNet, eliminationOrder):
