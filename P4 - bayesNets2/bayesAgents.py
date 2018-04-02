@@ -205,10 +205,6 @@ def fillObsCPT(bayesNet, gameState):
 
      Rather than figuring it out, you want to consider all possible assignments of the ghost house and food house. For example, if the food house is in the top left and the ghost house is in the top right, and your observation position is in the top left, then you are adjacent to a food house. Check the 4th followup for more information about how we can determine what type of house we are adjacent to.
     """
-    print bayesNet.variableDomainsDict()
-    print bayesNet.variableDomainsDict().keys()
-    print len(bayesNet.variableDomainsDict().keys())
-
     bottomLeftPos, topLeftPos, bottomRightPos, topRightPos = gameState.getPossibleHouses()
     
     for housePos in gameState.getPossibleHouses():
@@ -216,7 +212,7 @@ def fillObsCPT(bayesNet, gameState):
 
             obsVar = OBS_VAR_TEMPLATE % obsPos
 
-            obsFactor = bn.Factor([obsPos], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR], bayesNet.variableDomainsDict())
+            obsFactor = bn.Factor([obsPos], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR, X_POS_VAR, Y_POS_VAR], bayesNet.variableDomainsDict())
 
             for assignment in obsFactor.getAllPossibleAssignmentDicts():
                 BLUE_OBS_VAR = 0
@@ -255,9 +251,9 @@ def fillObsCPT(bayesNet, gameState):
                     BLUE_OBS_VAR = 1 - PROB_FOOD_RED
                     RED_OBS_VAR = PROB_FOOD_RED
 
-                obsFactor.setProbability({obsVar: BLUE_OBS_VAL}, BLUE_OBS_VAR)
-                obsFactor.setProbability({obsVar: RED_OBS_VAL}, RED_OBS_VAR)
-                obsFactor.setProbability({obsVar: NO_OBS_VAL}, NO_OBS_VAR)
+                obsFactor.setProbability({assignment: BLUE_OBS_VAL}, BLUE_OBS_VAR)
+                obsFactor.setProbability({assignment: RED_OBS_VAL}, RED_OBS_VAR)
+                obsFactor.setProbability({assignment: NO_OBS_VAL}, NO_OBS_VAR)
             bayesNet.setCPT(obsVar, obsFactor)
     
 
