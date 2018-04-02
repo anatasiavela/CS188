@@ -207,7 +207,7 @@ def fillObsCPT(bayesNet, gameState):
     """
     print bayesNet.variableDomainsDict()
     print bayesNet.variableDomainsDict().keys()
-    print len(bayesNet.variableDomainsDict().keys)
+    print len(bayesNet.variableDomainsDict().keys())
 
     bottomLeftPos, topLeftPos, bottomRightPos, topRightPos = gameState.getPossibleHouses()
     
