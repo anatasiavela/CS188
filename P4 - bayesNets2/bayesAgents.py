@@ -234,7 +234,7 @@ def fillObsCPT(bayesNet, gameState):
                     NO_OBS_VAR = 1
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
-                else if (top and left and assignment[FOOD_HOUSE_VAR] != TOP_LEFT_VAL and \
+                elif (top and left and assignment[FOOD_HOUSE_VAR] != TOP_LEFT_VAL and \
                         top and not left and assignment[FOOD_HOUSE_VAR] != TOP_RIGHT_VAL and \
                         not top and left and assignment[FOOD_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
                         not top and not left and assignment[FOOD_HOUSE_VAR] != BOTTOM_RIGHT_VAL) and \
@@ -246,7 +246,7 @@ def fillObsCPT(bayesNet, gameState):
                     RED_OBS_VAR = PROB_GHOST_RED
 
                 #adjacent house center is occupied by the food house, it is red with probability PROB_FOOD_RED and blue otherwise
-                else if top and left and assignment[FOOD_HOUSE_VAR] == TOP_LEFT_VAL or \
+                elif top and left and assignment[FOOD_HOUSE_VAR] == TOP_LEFT_VAL or \
                         top and not left and assignment[FOOD_HOUSE_VAR] == TOP_RIGHT_VAL or \
                         not top and left and assignment[FOOD_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
                         not top and not left and assignment[FOOD_HOUSE_VAR] == BOTTOM_RIGHT_VAL and \
