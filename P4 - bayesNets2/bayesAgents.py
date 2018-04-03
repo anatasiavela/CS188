@@ -232,11 +232,11 @@ def fillObsCPT(bayesNet, gameState):
                     prob = 0
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
-                elif assignment[FOOD_HOUSE_VAR] == possiblePos[housePos]:
+                elif assignment[GHOST_HOUSE_VAR] == possiblePos[housePos]:
                     prob = PROB_GHOST_RED
 
                 #adjacent house center is occupied by the food house, it is red with probability PROB_FOOD_RED and blue otherwise
-                elif assignment[GHOST_HOUSE_VAR] == possiblePos[housePos]:
+                elif assignment[FOOD_HOUSE_VAR] == possiblePos[housePos]:
                     prob = PROB_FOOD_RED
 
                 obsFactor.setProbability(assignment, prob)
