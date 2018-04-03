@@ -112,7 +112,7 @@ def joinFactors(factors):
 
     nFactor = Factor(list(unconditioned), list(conditioned), allVariables)
 
-    for assignments in nFactor.getAllPossibleAssignmentDicts():
+    for assignment in nFactor.getAllPossibleAssignmentDicts():
         prob = 1
         for factor in factors:
             prob *= factor.getProbability(assignment)
