@@ -116,7 +116,7 @@ def joinFactors(factors):
         prob = 1
         for factor in factors:
             prob *= factor.getProbability(assignment)
-        nFactor.setProbability(assignment, probability)
+        nFactor.setProbability(assignment, prob)
 
     return nFactor
 
