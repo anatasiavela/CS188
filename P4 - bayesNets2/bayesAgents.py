@@ -211,41 +211,42 @@ def fillObsCPT(bayesNet, gameState):
             obsVar = OBS_VAR_TEMPLATE % obsPos
             factor = bn.Factor([obsVar], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR], bayesNet.variableDomainsDict())
             for assignment in factor.getAllPossibleAssignmentDicts():
-                probRed = None;
-                probBlue = None;
-                probEmpty = None;
-                quad = None;
 
                 width_center = gameState.data.layout.width / 2
                 height_center = gameState.data.layout.height / 2
+
                 if obsPos[0] < width_center and obsPos[1] > height_center:
-                    quad = TOP_LEFT_VAL
+                    loc = TOP_LEFT_VAL
                 elif obsPos[0] > width_center and obsPos[1] > height_center:
-                    quad = TOP_RIGHT_VAL
+                    loc = TOP_RIGHT_VAL
                 elif obsPos[0] < width_center and obsPos[1] < height_center:
-                    quad = BOTTOM_LEFT_VAL
+                    loc = BOTTOM_LEFT_VAL
                 elif obsPos[0] > width_center and obsPos[1] < height_center:
-                    quad = BOTTOM_RIGHT_VAL
+                    loc = BOTTOM_RIGHT_VAL
 
                 if assignment[FOOD_HOUSE_VAR] == quad:
-                    probRed = PROB_FOOD_RED
-                    probBlue = 1 - PROB_FOOD_RED
-                    probEmpty = 0
+                    if assignment[obsVar] == RED_OBS_VAL:
+                        prob = PROB_FOOD_RED
+                    elif assignment[obsVar] == BLUE_OBS_VAL:
+                        prob = 1 - PROB_FOOD_RED
+                    else:
+                        prob = 0
                 elif assignment[GHOST_HOUSE_VAR] == quad:
-                    probRed = PROB_GHOST_RED
-                    probBlue = 1 - PROB_GHOST_RED
-                    probEmpty = 0
+                    if assignment[obsVar] == RED_OBS_VAL:
+                        prob = PROB_GHOST_RED
+                    elif assignment[obsVar] == BLUE_OBS_VAL:
+                        prob = 1 - PROB_GHOST_RED
+                    else:
+                        prob = 0
                 else: 
-                    probRed = 0
-                    probBlue = 0
-                    probEmpty = 1
+                    if assignment[obsVar] == RED_OBS_VAL:
+                        prob = 0
+                    elif assignment[obsVar] == BLUE_OBS_VAL:
+                        prob = 0
+                    else:
+                        prob = 1
 
-                if assignment[obsVar] == RED_OBS_VAL:
-                    factor.setProbability(assignment, probRed)
-                elif assignment[obsVar] == BLUE_OBS_VAL:
-                    factor.setProbability(assignment, probBlue)
-                else:
-                    factor.setProbability(assignment, probEmpty)
+                factor.setProbability(assignment, prob)
 
             bayesNet.setCPT(obsVar, factor)
 
