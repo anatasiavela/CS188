@@ -213,8 +213,6 @@ def fillObsCPT(bayesNet, gameState):
 
             obsFactor = bn.Factor([obsVar], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR, X_POS_VAR, Y_POS_VAR], bayesNet.variableDomainsDict())
 
-            print bayesNet.variableDomainsDict()
-
             for assignment in obsFactor.getAllPossibleAssignmentDicts():
                 BLUE_OBS_VAR = 0
                 RED_OBS_VAR = 0
@@ -252,9 +250,9 @@ def fillObsCPT(bayesNet, gameState):
                     BLUE_OBS_VAR = 1 - PROB_FOOD_RED
                     RED_OBS_VAR = PROB_FOOD_RED
 
-                obsFactor.setProbability({assignment: BLUE_OBS_VAL}, BLUE_OBS_VAR)
-                obsFactor.setProbability({assignment: RED_OBS_VAL}, RED_OBS_VAR)
-                obsFactor.setProbability({assignment: NO_OBS_VAL}, NO_OBS_VAR)
+                obsFactor.setProbability({obsVar: BLUE_OBS_VAL}, BLUE_OBS_VAR)
+                obsFactor.setProbability({obsVar: RED_OBS_VAL}, RED_OBS_VAR)
+                obsFactor.setProbability({obsVar: NO_OBS_VAL}, NO_OBS_VAR)
             bayesNet.setCPT(obsVar, obsFactor)
     
 
