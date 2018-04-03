@@ -224,14 +224,14 @@ def fillObsCPT(bayesNet, gameState):
                 elif obsPos[0] > width_center and obsPos[1] < height_center:
                     loc = BOTTOM_RIGHT_VAL
 
-                if assignment[FOOD_HOUSE_VAR] == quad:
+                if assignment[FOOD_HOUSE_VAR] == loc:
                     if assignment[obsVar] == RED_OBS_VAL:
                         prob = PROB_FOOD_RED
                     elif assignment[obsVar] == BLUE_OBS_VAL:
                         prob = 1 - PROB_FOOD_RED
                     else:
                         prob = 0
-                elif assignment[GHOST_HOUSE_VAR] == quad:
+                elif assignment[GHOST_HOUSE_VAR] == loc:
                     if assignment[obsVar] == RED_OBS_VAL:
                         prob = PROB_GHOST_RED
                     elif assignment[obsVar] == BLUE_OBS_VAL:
