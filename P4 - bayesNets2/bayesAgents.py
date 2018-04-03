@@ -214,9 +214,9 @@ def fillObsCPT(bayesNet, gameState):
             obsFactor = bn.Factor([obsVar], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR, X_POS_VAR, Y_POS_VAR], bayesNet.variableDomainsDict())
 
             for assignment in obsFactor.getAllPossibleAssignmentDicts():
-                BLUE_OBS_VAR = 0
-                RED_OBS_VAR = 0
-                NO_OBS_VAR = 0
+                blue_obs_val = 0
+                red_obs_val = 0
+                no_obs_val = 0
 
                 # determine which house is adjacent
                 left = assignment[X_POS_VAR] == FOOD_LEFT_VAL
@@ -232,27 +232,27 @@ def fillObsCPT(bayesNet, gameState):
                                     assignment[GHOST_HOUSE_VAR] != BOTTOM_LEFT_VAL) or \
                         (not top and not left and assignment[FOOD_HOUSE_VAR] != BOTTOM_RIGHT_VAL and \
                                     assignment[GHOST_HOUSE_VAR] != BOTTOM_RIGHT_VAL):
-                    NO_OBS_VAR = 1
+                    no_obs_val = 1
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
                 elif top and left and assignment[GHOST_HOUSE_VAR] == TOP_LEFT_VAL or \
                         top and not left and assignment[GHOST_HOUSE_VAR] == TOP_RIGHT_VAL or \
                         not top and left and assignment[GHOST_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
                         not top and not left and assignment[GHOST_HOUSE_VAR] == BOTTOM_RIGHT_VAL:
-                    BLUE_OBS_VAR = 1 - PROB_GHOST_RED
-                    RED_OBS_VAR = PROB_GHOST_RED
+                    blue_obs_val = 1 - PROB_GHOST_RED
+                    red_obs_val = PROB_GHOST_RED
 
                 #adjacent house center is occupied by the food house, it is red with probability PROB_FOOD_RED and blue otherwise
                 elif top and left and assignment[FOOD_HOUSE_VAR] == TOP_LEFT_VAL or \
                         top and not left and assignment[FOOD_HOUSE_VAR] == TOP_RIGHT_VAL or \
                         not top and left and assignment[FOOD_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
                         not top and not left and assignment[FOOD_HOUSE_VAR] == BOTTOM_RIGHT_VAL:
-                    BLUE_OBS_VAR = 1 - PROB_FOOD_RED
-                    RED_OBS_VAR = PROB_FOOD_RED
+                    blue_obs_val = 1 - PROB_FOOD_RED
+                    red_obs_val = PROB_FOOD_RED
 
-                obsFactor.setProbability({obsVar: BLUE_OBS_VAL}, BLUE_OBS_VAR)
-                obsFactor.setProbability({obsVar: RED_OBS_VAL}, RED_OBS_VAR)
-                obsFactor.setProbability({obsVar: NO_OBS_VAL}, NO_OBS_VAR)
+                obsFactor.setProbability({obsVar: blue_obs_val}, BLUE_OBS_VAR)
+                obsFactor.setProbability({obsVar: red_obs_val}, RED_OBS_VAR)
+                obsFactor.setProbability({obsVar: no_obs_val}, NO_OBS_VAR)
             bayesNet.setCPT(obsVar, obsFactor)
     
 
