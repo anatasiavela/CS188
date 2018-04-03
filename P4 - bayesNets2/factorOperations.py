@@ -101,7 +101,7 @@ def joinFactors(factors):
 
     unconditioned = set()
     conditioned = set()
-    allVariables = set()
+    allVariables = {}
     for factor in factors:
         unconditioned.update(factor.unconditionedVariables())
         conditioned.update(factor.conditionedVariables())
@@ -110,7 +110,7 @@ def joinFactors(factors):
     # remove conditioned variables from unconditioned
     conditioned = conditioned.difference(unconditioned)
 
-    nFactor = Factor(unconditioned, conditioned, allVariables)
+    nFactor = Factor(list(unconditioned), list(conditioned), allVariables)
 
     for assignments in newFactor.getAllPossibleAssignmentDicts():
         prob = 1
