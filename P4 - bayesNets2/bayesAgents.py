@@ -220,6 +220,8 @@ def fillObsCPT(bayesNet, gameState):
                 red_prob = 0
                 no_prob = 0
 
+                print assignment
+
                 # determine which house is adjacent
                 left = assignment[X_POS_VAR] == FOOD_LEFT_VAL
                 top = assignment[Y_POS_VAR] == BOTH_TOP_VAL or \
