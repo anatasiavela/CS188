@@ -171,12 +171,17 @@ def eliminateWithCallTracking(callTrackingList=None):
         allVariables = factor.variableDomainsDict()
 
         # remove elimination variables from unconditioned
-        unconditioned = unconditioned.difference(eliminationVariable)
+        unconditioned = unconditioned.remove(eliminationVariable)
 
         nFactor = Factor(unconditioned, conditioned, allVariables)
 
         for assignment in nFactor.getAllPossibleAssignmentDicts():
-            prob = factor.getProbability(assignment)
+            prob = 0
+            for value in allVariables[eliminationVariable]:
+                oldAssignment = assignment
+                oldAssignment[eliminationVariable] = value
+
+                prob += factor.getProbability(oldAssignment)
             nFactor.setProbability(assignment, prob)
 
         return nFactor
