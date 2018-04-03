@@ -209,7 +209,6 @@ def fillObsCPT(bayesNet, gameState):
     
     for housePos in gameState.getPossibleHouses():
         for obsPos in gameState.getHouseWalls(housePos):
-
             obsVar = OBS_VAR_TEMPLATE % obsPos
 
             obsFactor = bn.Factor([obsPos], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR, X_POS_VAR, Y_POS_VAR], bayesNet.variableDomainsDict())
