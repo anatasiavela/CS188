@@ -250,9 +250,9 @@ def fillObsCPT(bayesNet, gameState):
                     blue_obs_val = 1 - PROB_FOOD_RED
                     red_obs_val = PROB_FOOD_RED
 
-                obsFactor.setProbability({obsVar: blue_obs_val}, BLUE_OBS_VAR)
-                obsFactor.setProbability({obsVar: red_obs_val}, RED_OBS_VAR)
-                obsFactor.setProbability({obsVar: no_obs_val}, NO_OBS_VAR)
+                obsFactor.setProbability({obsVar: BLUE_OBS_VAR}, blue_obs_val)
+                obsFactor.setProbability({obsVar: RED_OBS_VAR}, red_obs_val)
+                obsFactor.setProbability({obsVar: NO_OBS_VAR}, no_obs_val)
             bayesNet.setCPT(obsVar, obsFactor)
     
 
