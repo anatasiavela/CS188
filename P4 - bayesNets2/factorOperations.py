@@ -176,9 +176,7 @@ def eliminateWithCallTracking(callTrackingList=None):
         nFactor = Factor(unconditioned, conditioned, allVariables)
 
         for assignment in nFactor.getAllPossibleAssignmentDicts():
-            prob = 1
-            for factor in factors:
-                prob *= factor.getProbability(assignment)
+            prob = factor.getProbability(assignment)
             nFactor.setProbability(assignment, prob)
 
         return nFactor
