@@ -254,9 +254,13 @@ def normalize(factor):
         if len(allVariables[var]) == 1:
             conditioned.add(var)
 
-    unconditioned.remove(conditioned)
+    unconditionedVariablesFinal = []
+    for var in unconditionedVariables:
+        if var not in conditionedVariables:
+            unconditionedVariablesFinal.append(var)
 
-    nFactor = Factor(unconditioned, conditioned, allVariables)
+
+    nFactor = Factor(unconditionedVariablesFinal, conditioned, allVariables)
 
     for assignment in factor.getAllPossibleAssignmentDicts():
         prob = factor.getProbability(assignment)
