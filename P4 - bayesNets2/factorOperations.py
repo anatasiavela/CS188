@@ -166,18 +166,14 @@ def eliminateWithCallTracking(callTrackingList=None):
                     "eliminationVariable:" + str(eliminationVariable) + "\n" +\
                     "unconditionedVariables: " + str(factor.unconditionedVariables()))
 
-        unconditioned = set()
-        conditioned = set()
-        allVariables = {}
-        for factor in factors:
-            unconditioned.update(factor.unconditionedVariables())
-            conditioned.update(factor.conditionedVariables())
-            allVariables.update(factor.variableDomainsDict())
+        unconditioned = factor.unconditionedVariables()
+        conditioned = factor.conditionedVariables()
+        allVariables = factor.variableDomainsDict()
 
         # remove elimination variables from unconditioned
         unconditioned = unconditioned.difference(eliminationVariable)
 
-        nFactor = Factor(list(unconditioned), list(conditioned), allVariables)
+        nFactor = Factor(unconditioned, conditioned, allVariables)
 
         for assignment in nFactor.getAllPossibleAssignmentDicts():
             prob = 1
