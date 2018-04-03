@@ -213,13 +213,13 @@ def fillObsCPT(bayesNet, gameState):
                     topLeftPos: TOP_LEFT_VAL, 
                     }
 
-    print "possiblePos" + str(possiblePos)
+    print "possiblePos: " + str(possiblePos)
     
     for housePos in gameState.getPossibleHouses():
-        print "housePos" + str(housePos)
+        print "housePos: " + str(housePos)
         for obsPos in gameState.getHouseWalls(housePos):
             obsVar = OBS_VAR_TEMPLATE % obsPos
-            print "obsVar" + str(obsVar)
+            print "obsVar: " + str(obsVar)
 
             obsFactor = bn.Factor([obsVar], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR], bayesNet.variableDomainsDict())
 
@@ -228,25 +228,19 @@ def fillObsCPT(bayesNet, gameState):
                 red_prob = 0
                 no_prob = 0
 
-                print assignment
+                print "assignment: " + assignment
 
                 # adjacent house center is occupied by neigher the ghost house or the food house
-                if assignment[FOOD_HOUSE_VAR] != possiblePos[housePos]:
+                if assignment[FOOD_HOUSE_VAR] != possiblePos[housePos] and assignment[GHOST_HOUSE_VAR] != possiblePos[housePos]:
                     no_prob = 1
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
-                elif top and left and assignment[GHOST_HOUSE_VAR] == TOP_LEFT_VAL or \
-                        top and not left and assignment[GHOST_HOUSE_VAR] == TOP_RIGHT_VAL or \
-                        not top and left and assignment[GHOST_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
-                        not top and not left and assignment[GHOST_HOUSE_VAR] == BOTTOM_RIGHT_VAL:
+                elif assignment[FOOD_HOUSE_VAR] == possiblePos[housePos]:
                     blue_prob = 1 - PROB_GHOST_RED
                     red_prob = PROB_GHOST_RED
 
                 #adjacent house center is occupied by the food house, it is red with probability PROB_FOOD_RED and blue otherwise
-                elif top and left and assignment[FOOD_HOUSE_VAR] == TOP_LEFT_VAL or \
-                        top and not left and assignment[FOOD_HOUSE_VAR] == TOP_RIGHT_VAL or \
-                        not top and left and assignment[FOOD_HOUSE_VAR] == BOTTOM_LEFT_VAL or \
-                        not top and not left and assignment[FOOD_HOUSE_VAR] == BOTTOM_RIGHT_VAL:
+                elif assignment[GHOST_HOUSE_VAR] == possiblePos[housePos]:
                     blue_prob = 1 - PROB_FOOD_RED
                     red_prob = PROB_FOOD_RED
 
