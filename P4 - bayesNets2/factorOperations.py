@@ -255,8 +255,8 @@ def normalize(factor):
             conditioned.add(var)
 
     unconditionedVariablesFinal = []
-    for var in unconditionedVariables:
-        if var not in conditionedVariables:
+    for var in unconditioned:
+        if var not in conditioned:
             unconditionedVariablesFinal.append(var)
 
 
