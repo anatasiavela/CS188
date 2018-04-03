@@ -224,29 +224,22 @@ def fillObsCPT(bayesNet, gameState):
             obsFactor = bn.Factor([obsVar], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR], bayesNet.variableDomainsDict())
 
             for assignment in obsFactor.getAllPossibleAssignmentDicts():
-                blue_prob = 0
-                red_prob = 0
-                no_prob = 0
 
                 print "assignment: " + str(assignment)
 
                 # adjacent house center is occupied by neigher the ghost house or the food house
                 if assignment[FOOD_HOUSE_VAR] != possiblePos[housePos] and assignment[GHOST_HOUSE_VAR] != possiblePos[housePos]:
-                    no_prob = 1
+                    prob = 0
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
                 elif assignment[FOOD_HOUSE_VAR] == possiblePos[housePos]:
-                    blue_prob = 1 - PROB_GHOST_RED
-                    red_prob = PROB_GHOST_RED
+                    prob = PROB_GHOST_RED
 
                 #adjacent house center is occupied by the food house, it is red with probability PROB_FOOD_RED and blue otherwise
                 elif assignment[GHOST_HOUSE_VAR] == possiblePos[housePos]:
-                    blue_prob = 1 - PROB_FOOD_RED
-                    red_prob = PROB_FOOD_RED
+                    prob = PROB_FOOD_RED
 
-                obsFactor.setProbability({obsVar: BLUE_OBS_VAL}, blue_prob)
-                obsFactor.setProbability({obsVar: RED_OBS_VAL}, red_prob)
-                obsFactor.setProbability({obsVar: NO_OBS_VAL}, no_prob)
+                obsFactor.setProbability(assignment, prob)
             bayesNet.setCPT(obsVar, obsFactor)
     
 
