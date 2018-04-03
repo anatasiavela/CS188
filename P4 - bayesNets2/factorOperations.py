@@ -110,7 +110,7 @@ def joinFactors(factors):
     unconditioned = list(unconditioned)
     conditioned = list(unconditioned)
 
-    return bayesNet.Factor(unconditioned, conditioned, Factor.variableDomainsDict())
+    return Factor(unconditioned, conditioned, Factor.variableDomainsDict())
 
 
 def eliminateWithCallTracking(callTrackingList=None):
