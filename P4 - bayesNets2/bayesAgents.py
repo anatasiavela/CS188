@@ -207,22 +207,19 @@ def fillObsCPT(bayesNet, gameState):
     """
     print bayesNet.variableDomainsDict()
     bottomLeftPos, topLeftPos, bottomRightPos, topRightPos = gameState.getPossibleHouses()
-    possiblePos = {BOTTOM_LEFT_VAL: bottomLeftPos,
-                    BOTTOM_RIGHT_VAL: bottomRightPos,
-                    TOP_RIGHT_VAL: topRightPos,
-                    TOP_LEFT_VAL: topLeftPos, 
-                    }
     possiblePos = {bottomLeftPos: BOTTOM_LEFT_VAL,
                     bottomRightPos: BOTTOM_RIGHT_VAL,
                     topRightPos: TOP_RIGHT_VAL,
                     topLeftPos: TOP_LEFT_VAL, 
                     }
+
+    print "possiblePos" + str(possiblePos)
     
     for housePos in gameState.getPossibleHouses():
-        print housePos
+        print "housePos" + str(housePos)
         for obsPos in gameState.getHouseWalls(housePos):
             obsVar = OBS_VAR_TEMPLATE % obsPos
-            print obsVar
+            print "obsVar" + str(obsVar)
 
             obsFactor = bn.Factor([obsVar], [FOOD_HOUSE_VAR, GHOST_HOUSE_VAR], bayesNet.variableDomainsDict())
 
