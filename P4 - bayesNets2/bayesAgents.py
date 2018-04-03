@@ -212,6 +212,11 @@ def fillObsCPT(bayesNet, gameState):
                     TOP_RIGHT_VAL: topRightPos,
                     TOP_LEFT_VAL: topLeftPos, 
                     }
+    possiblePos = {bottomLeftPos: BOTTOM_LEFT_VAL,
+                    bottomRightPos: BOTTOM_RIGHT_VAL,
+                    topRightPos: TOP_RIGHT_VAL,
+                    topLeftPos: TOP_LEFT_VAL, 
+                    }
     
     for housePos in gameState.getPossibleHouses():
         print housePos
