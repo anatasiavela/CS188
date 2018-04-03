@@ -207,8 +207,14 @@ def fillObsCPT(bayesNet, gameState):
     """
     print bayesNet.variableDomainsDict()
     bottomLeftPos, topLeftPos, bottomRightPos, topRightPos = gameState.getPossibleHouses()
+    possiblePos = {BOTTOM_LEFT_VAL: bottomLeftPos,
+                    BOTTOM_RIGHT_VAL: bottomRightPos,
+                    TOP_RIGHT_VAL: topRightPos,
+                    TOP_LEFT_VAL: topLeftPos, 
+                    }
     
     for housePos in gameState.getPossibleHouses():
+        print housePos
         for obsPos in gameState.getHouseWalls(housePos):
             obsVar = OBS_VAR_TEMPLATE % obsPos
             print obsVar
@@ -222,20 +228,8 @@ def fillObsCPT(bayesNet, gameState):
 
                 print assignment
 
-                # determine which house is adjacent
-                left = assignment[X_POS_VAR] == FOOD_LEFT_VAL
-                top = assignment[Y_POS_VAR] == BOTH_TOP_VAL or \
-                        (left and assignment[Y_POS_VAR] == LEFT_TOP_VAL)
-
                 # adjacent house center is occupied by neigher the ghost house or the food house
-                if (top and left and assignment[FOOD_HOUSE_VAR] != TOP_LEFT_VAL and \
-                                    assignment[GHOST_HOUSE_VAR] != TOP_LEFT_VAL) or \
-                        (top and not left and assignment[FOOD_HOUSE_VAR] != TOP_RIGHT_VAL and \
-                                    assignment[GHOST_HOUSE_VAR] != TOP_RIGHT_VAL) or \
-                        (not top and left and assignment[FOOD_HOUSE_VAR] != BOTTOM_LEFT_VAL and \
-                                    assignment[GHOST_HOUSE_VAR] != BOTTOM_LEFT_VAL) or \
-                        (not top and not left and assignment[FOOD_HOUSE_VAR] != BOTTOM_RIGHT_VAL and \
-                                    assignment[GHOST_HOUSE_VAR] != BOTTOM_RIGHT_VAL):
+                if assignment[FOOD_HOUSE_VAR] != possiblePos[housePos]:
                     no_prob = 1
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
