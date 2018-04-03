@@ -225,18 +225,27 @@ def fillObsCPT(bayesNet, gameState):
             obsFactor = bn.Factor([obsVar], [GHOST_HOUSE_VAR, FOOD_HOUSE_VAR], bayesNet.variableDomainsDict())
 
             for assignment in obsFactor.getAllPossibleAssignmentDicts():
+
                 width_center = gameState.data.layout.width / 2
                 height_center = gameState.data.layout.height / 2
+                if obsPos[0] < width_center and obsPos[1] > height_center:
+                    loc = TOP_LEFT_VAL
+                elif obsPos[0] > width_center and obsPos[1] > height_center:
+                    loc = TOP_RIGHT_VAL
+                elif obsPos[0] < width_center and obsPos[1] < height_center:
+                    loc = BOTTOM_LEFT_VAL
+                elif obsPos[0] > width_center and obsPos[1] < height_center:
+                    loc = BOTTOM_RIGHT_VAL
 
                 # adjacent house center is occupied by neigher the ghost house or the food house
-                if possiblePos[assignment[FOOD_HOUSE_VAR]] != housePos and possiblePos[assignment[GHOST_HOUSE_VAR]] != housePos:
+                if assignment[FOOD_HOUSE_VAR] != loc and assignment[GHOST_HOUSE_VAR] != loc:
                     if assignment[obsVar] == 'blue' or assignment[obsVar] == 'red':
                         prob = 0
                     else:
                         prob = 1
 
                 # adjacent house center is occupied by the ghost house, it is red with probability PROB_GHOST_RED and blue otherwise
-                elif possiblePos[assignment[GHOST_HOUSE_VAR]] == housePos:
+                elif assignment[GHOST_HOUSE_VAR] == loc:
                     if assignment[obsVar] == 'blue':
                         prob = 1 - PROB_GHOST_RED
                     elif assignment[obsVar] == 'red':
@@ -245,7 +254,7 @@ def fillObsCPT(bayesNet, gameState):
                         prob = 0
 
                 #adjacent house center is occupied by the food house, it is red with probability PROB_FOOD_RED and blue otherwise
-                elif possiblePos[assignment[FOOD_HOUSE_VAR]] == housePos:
+                elif assignment[FOOD_HOUSE_VAR] == loc:
                     if assignment[obsVar] == 'blue':
                         prob = 1 - PROB_FOOD_RED
                     elif assignment[obsVar] == 'red':
