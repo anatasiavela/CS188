@@ -247,19 +247,19 @@ def normalize(factor):
     for assignment in factor.getAllPossibleAssignmentDicts():
         sumProb += factor.getProbability(assignment)
 
-    if totalProb == 0:
+    if sumProb == 0:
         return None
-        
+
     for var in unconditioned:
         if len(allVariables[var]) == 1:
             conditioned.add(var)
 
     unconditioned.remove(conditioned)
 
-    newFactor = Factor(unconditioned, conditioned, allVariables)
+    nFactor = Factor(unconditioned, conditioned, allVariables)
 
-    for assignment in assignments:
+    for assignment in factor.getAllPossibleAssignmentDicts():
         prob = factor.getProbability(assignment)
-        newFactor.setProbability(assignment, prob / totalProb)
+        nFactor.setProbability(assignment, prob / sumProb)
 
-    return newFactor
+    return nFactor
