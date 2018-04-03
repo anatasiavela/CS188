@@ -101,16 +101,24 @@ def joinFactors(factors):
 
     unconditioned = set()
     conditioned = set()
+    allVariables = set()
     for factor in factors:
         unconditioned.update(factor.unconditionedVariables())
         conditioned.update(factor.conditionedVariables())
+        allVariables.update(factor.variableDomainsDict())
 
-    conditioned = conditioned - unconditioned
+    # remove conditioned variables from unconditioned
+    conditioned = conditioned.difference(unconditioned)
 
-    unconditioned = list(unconditioned)
-    conditioned = list(unconditioned)
+    nFactor = Factor(unconditioned, conditioned, allVariables)
 
-    return Factor(unconditioned, conditioned, Factor.variableDomainsDict())
+    for assignments in newFactor.getAllPossibleAssignmentDicts():
+        prob = 1
+        for factor in factors:
+            prob *= factor.getProbability(assignment)
+        nFactor.setProbability(assignment, probability)
+
+    return nFactor
 
 
 def eliminateWithCallTracking(callTrackingList=None):
