@@ -171,7 +171,7 @@ def eliminateWithCallTracking(callTrackingList=None):
         allVariables = factor.variableDomainsDict()
 
         # remove elimination variables from unconditioned
-        unconditioned = unconditioned.remove(eliminationVariable)
+        unconditioned.remove(eliminationVariable)
 
         nFactor = Factor(unconditioned, conditioned, allVariables)
 
