@@ -107,7 +107,7 @@ def joinFactors(factors):
         conditioned.update(factor.conditionedVariables())
         allVariables.update(factor.variableDomainsDict())
 
-    # remove conditioned variables from unconditioned
+    # remove conditioned variables from conditioned
     conditioned = conditioned.difference(unconditioned)
 
     nFactor = Factor(list(unconditioned), list(conditioned), allVariables)
@@ -166,8 +166,27 @@ def eliminateWithCallTracking(callTrackingList=None):
                     "eliminationVariable:" + str(eliminationVariable) + "\n" +\
                     "unconditionedVariables: " + str(factor.unconditionedVariables()))
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        unconditioned = set()
+        conditioned = set()
+        allVariables = {}
+        for factor in factors:
+            unconditioned.update(factor.unconditionedVariables())
+            conditioned.update(factor.conditionedVariables())
+            allVariables.update(factor.variableDomainsDict())
+
+        # remove elimination variables from unconditioned
+        unconditioned = unconditioned.difference(eliminationVariable)
+
+        nFactor = Factor(list(unconditioned), list(conditioned), allVariables)
+
+        for assignment in nFactor.getAllPossibleAssignmentDicts():
+            prob = 1
+            for factor in factors:
+                prob *= factor.getProbability(assignment)
+            nFactor.setProbability(assignment, prob)
+
+        return nFactor
+
 
     return eliminate
 
