@@ -228,7 +228,7 @@ def fillObsCPT(bayesNet, gameState):
                 red_prob = 0
                 no_prob = 0
 
-                print "assignment: " + assignment
+                print "assignment: " + str(assignment)
 
                 # adjacent house center is occupied by neigher the ghost house or the food house
                 if assignment[FOOD_HOUSE_VAR] != possiblePos[housePos] and assignment[GHOST_HOUSE_VAR] != possiblePos[housePos]:
