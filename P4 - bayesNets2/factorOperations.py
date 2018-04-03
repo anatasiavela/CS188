@@ -99,9 +99,18 @@ def joinFactors(factors):
                     "Input factors: \n" +
                     "\n".join(map(str, factors)))
 
+    unconditioned = set()
+    conditioned = set()
+    for factor in factors:
+        unconditioned.update(factor.unconditionedVariables())
+        conditioned.update(factor.conditionedVariables())
 
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    conditioned = conditioned - unconditioned
+
+    unconditioned = list(unconditioned)
+    conditioned = list(unconditioned)
+
+    return Factor.Factor(unconditioned, conditioned, Factor.variableDomainsDict())
 
 
 def eliminateWithCallTracking(callTrackingList=None):
