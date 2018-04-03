@@ -205,6 +205,7 @@ def fillObsCPT(bayesNet, gameState):
 
      Rather than figuring it out, you want to consider all possible assignments of the ghost house and food house. For example, if the food house is in the top left and the ghost house is in the top right, and your observation position is in the top left, then you are adjacent to a food house. Check the 4th followup for more information about how we can determine what type of house we are adjacent to.
     """
+    print bayesNet.variableDomainsDict()
     bottomLeftPos, topLeftPos, bottomRightPos, topRightPos = gameState.getPossibleHouses()
     
     for housePos in gameState.getPossibleHouses():
