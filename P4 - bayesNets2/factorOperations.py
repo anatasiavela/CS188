@@ -259,7 +259,6 @@ def normalize(factor):
         if var not in conditioned:
             unconditionedVariablesFinal.append(var)
 
-
     nFactor = Factor(unconditionedVariablesFinal, conditioned, allVariables)
 
     for assignment in factor.getAllPossibleAssignmentDicts():

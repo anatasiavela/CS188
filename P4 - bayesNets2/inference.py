@@ -130,8 +130,15 @@ def inferenceByVariableEliminationWithCallTracking(callTrackingList=None):
                                    set(evidenceDict.keys())
             eliminationOrder = sorted(list(eliminationVariables))
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        for var in eliminationOrder:
+            currentFactorsList, joinedFactor = joinFactorsByVariable(currentFactorsList, var)
+
+            if len(joinedFactor.unconditionedVariables()) > 1:
+                newFactor = eliminate(joinedFactor, var)
+                currentFactorsList.append(newFactor)
+
+        joinedFactors = joinFactors(currentFactorsList)
+        return normalize(joinedFactors)
 
 
     return inferenceByVariableElimination
