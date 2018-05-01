@@ -388,7 +388,7 @@ class SquareLoss(FunctionNode):
 
     @staticmethod
     def forward(inputs):
-        return np.mean(0.5 * (inputs[0] - inputs[1])**2)
+        return np.mean(0.5 * np.square((inputs[0] - inputs[1])))
 
     @staticmethod
     def backward(inputs, gradient):
