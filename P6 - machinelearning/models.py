@@ -45,7 +45,8 @@ class RegressionModel(Model):
 
         # Remember to set self.learning_rate!
         # You may use any learning rate that works well for your architecture
-        "*** YOUR CODE HERE ***"
+        self.learning_rate = 0.03
+        self.initialized = False
 
     def run(self, x, y=None):
         """
@@ -67,19 +68,40 @@ class RegressionModel(Model):
             (if y is None) A (batch_size x 1) numpy array of predicted y-values
 
         Note: DO NOT call backprop() or step() inside this method!
+
+        f(X) = relu(x * W_1 + b_1) * W_2 + b_2
         """
-        "*** YOUR CODE HERE ***"
+        b = len(x)
+        i = x.shape[1]
+        h = 33
+
+        if not self.initialized:
+            self.W_1 = nn.Variable(i, h)
+            self.b_1 = nn.Variable(b, h)
+            self.W_2 = nn.Variable(h, i)
+            self.b_2 = nn.Variable(b, i)
+            self.initialized = True
+
+        g = nn.Graph([self.W_1, self.b_1, self.W_2, self.b_2])
+
+        inX = nn.Input(g, x)
+        mul1 = nn.MatrixMultiply(g, inX, self.W_1)
+        add1 = nn.MatrixVectorAdd(g, mul1, self.b_1)
+        relu = nn.ReLU(g, add1)
+        mul2 = nn.MatrixMultiply(g, relu, self.W_2)
+        add2 = nn.MatrixVectorAdd(g, mul2, self.b_2)
 
         if y is not None:
             # At training time, the correct output `y` is known.
             # Here, you should construct a loss node, and return the nn.Graph
             # that the node belongs to. The loss node must be the last node
             # added to the graph.
-            "*** YOUR CODE HERE ***"
+            loss = nn.SquareLoss(g, add2, y)
+            return g
         else:
             # At test time, the correct output is unknown.
             # You should instead return your model's prediction as a numpy array
-            "*** YOUR CODE HERE ***"
+            return add2
 
 
 class OddRegressionModel(Model):
